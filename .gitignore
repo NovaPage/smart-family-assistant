@@ -1,0 +1,158 @@
+# -----------------------------
+# 🌍 GLOBAL IGNORADOS GENERALES
+# -----------------------------
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.swn
+*.sublime-workspace
+*.sublime-project
+
+# Archivos de sistema
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Archivos temporales de backup
+*~
+*.orig
+*.rej
+*.swo
+*.swp
+
+# -----------------------------
+# 🐍 PYTHON / FASTAPI / AUTOGEN
+# -----------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+pip-wheel-metadata/
+
+# Entornos virtuales
+.venv/
+venv/
+ENV/
+env/
+
+# Archivos de configuración o sensitive
+.env
+.env.*
+!.env.template
+
+# Archivos pytest/mypy/cache
+.pytest_cache/
+.mypy_cache/
+.cache/
+.coverage
+coverage.xml
+*.cover
+*.pyc
+
+# IDEs
+.vscode/
+.idea/
+
+# -----------------------------
+# ⚡ AZURE FUNCTIONS (PYTHON)
+# -----------------------------
+local.settings.json
+__pycache__/
+*.py[cod]
+
+# -----------------------------
+# 🌐 ANGULAR / NODE.JS FRONTEND
+# -----------------------------
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Angular build
+src/frontend/asistente-frontend/.angular/
+src/frontend/asistente-frontend/.output/
+src/frontend/asistente-frontend/.cache/
+src/frontend/asistente-frontend/dist/
+src/frontend/asistente-frontend/tmp/
+src/frontend/asistente-frontend/.env
+
+# Angular environments
+src/frontend/asistente-frontend/src/environments/*.ts
+!src/frontend/asistente-frontend/src/environments/environment.ts
+
+# -----------------------------
+# 🧪 TESTS / COVERAGE / CI
+# -----------------------------
+.tox/
+.nox/
+.coverage
+coverage.*
+nosetests.xml
+test-results/
+test-output/
+
+# -----------------------------
+# 🚀 DEPLOY / DOCKER / BUILD
+# -----------------------------
+*.tar.gz
+*.whl
+*.zip
+*.egg
+*.manifest
+*.spec
+
+# Docker
+*.pid
+*.log
+docker-compose.override.yml
+
+# -----------------------------
+# 🧪 TOOLS / TEMP DATA / DOCS
+# -----------------------------
+docs/_build/
+*.sqlite3
+*.db
+*.log
+*.bak
+*.lock
+
+# -----------------------------
+# 🔐 SEGURIDAD (ARCHIVOS SENSIBLES)
+# -----------------------------
+secrets.yaml
+credentials.json
+serviceAccountKey.json
+*.pem
+*.key
+*.crt
+*.pfx
+*.der
+
+# -----------------------------
+# 🔧 MAKE Y OTROS BINARIOS
+# -----------------------------
+*.out
+*.exe
+*.dll
+*.bin
+*.class
+*.jar
+*.war
+*.map
+*.d.ts
+
+# -----------------------------
+# 🚫 EXCLUSIONES
+# -----------------------------
+!.env.template
