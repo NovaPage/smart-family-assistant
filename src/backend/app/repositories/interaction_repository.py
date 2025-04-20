@@ -1,0 +1,43 @@
+# File: src/backend/app/repositories/interaction_repository.py
+
+from uuid import UUID, uuid4
+from datetime import datetime, timezone
+from typing import List
+
+from app.models.interaction import Interaction
+from app.repositories.cosmos_client import database
+
+interactions_container = database.get_container_client("interactions")
+
+
+def save_interaction(interaction: Interaction) -> None:
+    """
+    Saves a user-assistant interaction to the database.
+    """
+    item = {
+        "id": str(uuid4()),
+        "user_id": str(interaction.user_id),
+        "message": interaction.message,
+        "response": interaction.response,
+        "timestamp": interaction.timestamp.isoformat()
+    }
+    interactions_container.create_item(item)
+
+
+def get_interactions_by_user(user_id: UUID) -> List[Interaction]:
+    """
+    Retrieves all interactions for a given user.
+    """
+    query = "SELECT * FROM interactions i WHERE i.user_id = @user_id"
+    params = [{"name": "@user_id", "value": str(user_id)}]
+    items = interactions_container.query_items(query, parameters=params, enable_cross_partition_query=True)
+
+    return [
+        Interaction(
+            user_id=UUID(item["user_id"]),
+            message=item["message"],
+            response=item["response"],
+            timestamp=datetime.fromisoformat(item["timestamp"])
+        )
+        for item in items
+    ]

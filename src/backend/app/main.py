@@ -1,8 +1,28 @@
+# File: src/backend/app/main.py
+
 from fastapi import FastAPI
-from app.api.v1.router import router as api_router
-from app.core.config import load_env
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+from app.api.v1 import endpoints
 
-load_env()
-app.include_router(api_router)
+app = FastAPI(
+    title="Smart Family Assistant API",
+    version="1.0.0",
+    description="Backend for the intelligent family assistant MVP"
+)
+
+# Optional: CORS middleware if frontend runs separately
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change in prod
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Register API routes
+app.include_router(endpoints.router, prefix="/api/v1")
+
+@app.get("/ping")
+def ping():
+    return {"message": "pong"}
