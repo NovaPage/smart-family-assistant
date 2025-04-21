@@ -19,6 +19,8 @@ class UserProfile(BaseModel):
     id: UUID
     name: str
     email: EmailStr
+    telegram_token: Optional[str] = None
+
 
 
 class UserInDB(UserProfile):

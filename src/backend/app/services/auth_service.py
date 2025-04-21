@@ -8,7 +8,7 @@ from app.core.config import settings
 from passlib.context import CryptContext
 from jose import jwt
 from datetime import datetime, timedelta, timezone
-from uuid import UUID
+from uuid import UUID, uuid4
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -42,14 +42,22 @@ def create_jwt_token(user_id: UUID) -> Token:
 
 def register(user_data: UserCreate) -> Token:
     """
-    Registers a new user and returns a JWT.
+    Registers a new user, generates a telegram_token, and returns a JWT.
     """
     existing = user_repository.get_user_by_email(user_data.email)
     if existing:
         raise Exception("Email already registered")
 
     hashed_pw = hash_password(user_data.password)
-    user = user_repository.create_user(user_data, hashed_pw)
+
+    # Generamos el telegram_token
+    telegram_token = str(uuid4())
+
+    # Extendemos los datos del usuario
+    user_data_dict = user_data.dict()
+    user_data_dict["telegram_token"] = telegram_token
+
+    user = user_repository.create_user(user_data_dict, hashed_pw)
     return create_jwt_token(user.id)
 
 

@@ -9,7 +9,7 @@ def get_profile(user: UserInDB) -> UserProfile:
     """
     Returns the profile of the authenticated user.
     """
-    return UserProfile(id=user.id, name=user.name, email=user.email)
+    return UserProfile(id=user.id, name=user.name, email=user.email, telegram_token=user.telegram_token)
 
 
 def update_profile(user: UserInDB, data: UserUpdate) -> UserProfile:

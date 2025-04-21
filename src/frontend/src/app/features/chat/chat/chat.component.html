@@ -1,1 +1,17 @@
-<p>chat works!</p>
+<div class="chat-container">
+    <div class="messages">
+      <div *ngFor="let msg of messages" [ngClass]="msg.sender">
+        <strong>{{ msg.sender }}:</strong> {{ msg.content }}
+      </div>
+    </div>
+  
+    <div class="input-section">
+      <input [(ngModel)]="inputMessage" placeholder="Type a message..." />
+      <button (click)="sendMessage()" [disabled]="isLoading">Send</button>
+    </div>
+  
+    <div *ngIf="isLoading">
+      <p>Loading response...</p>
+    </div>
+  </div>
+  

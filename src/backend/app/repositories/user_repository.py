@@ -14,20 +14,30 @@ database = cosmos_client.get_database_client(settings.cosmos_db_database)
 users_container = database.get_container_client("users")
 
 
-def create_user(user_data: UserCreate, hashed_password: str) -> UserInDB:
+def create_user(user_data: dict, hashed_password: str) -> UserInDB:
     """
-    Creates a new user in the database with hashed password.
+    Creates a new user in the database with hashed password and optional telegram_token.
     """
     user_id = str(uuid4())
     user_record = {
         "id": user_id,
-        "name": user_data.name,
-        "email": user_data.email,
-        "hashed_password": hashed_password
+        "name": user_data["name"],
+        "email": user_data["email"],
+        "hashed_password": hashed_password,
     }
 
+    if "telegram_token" in user_data:
+        user_record["telegram_token"] = user_data["telegram_token"]
+
     users_container.create_item(user_record)
-    return UserInDB(id=UUID(user_id), name=user_data.name, email=user_data.email, hashed_password=hashed_password)
+
+    return UserInDB(
+        id=UUID(user_id),
+        name=user_data["name"],
+        email=user_data["email"],
+        hashed_password=hashed_password,
+        telegram_token=user_data.get("telegram_token")
+    )
 
 
 def get_user_by_email(email: str) -> Optional[UserInDB]:
@@ -46,7 +56,8 @@ def get_user_by_email(email: str) -> Optional[UserInDB]:
         id=UUID(user["id"]),
         name=user["name"],
         email=user["email"],
-        hashed_password=user["hashed_password"]
+        hashed_password=user["hashed_password"],
+        telegram_token=user.get("telegram_token")
     )
 
 
@@ -60,7 +71,8 @@ def get_user_by_id(user_id: UUID) -> Optional[UserInDB]:
             id=UUID(user["id"]),
             name=user["name"],
             email=user["email"],
-            hashed_password=user["hashed_password"]
+            hashed_password=user["hashed_password"],
+            telegram_token=user.get("telegram_token")
         )
     except CosmosResourceNotFoundError:
         return None
