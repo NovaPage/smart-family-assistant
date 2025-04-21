@@ -1,0 +1,27 @@
+<h2>Register</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <p>Name:</p>
+  <input formControlName="name" />
+  <div *ngIf="form.controls['name'].invalid && form.controls['name'].touched">
+    Name is required.
+  </div>
+
+  <p>Email:</p>
+  <input formControlName="email" />
+  <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
+    Email is required and must be valid.
+  </div>
+
+  <p>Password:</p>
+  <input type="password" formControlName="password" />
+  <div *ngIf="form.controls['password'].invalid && form.controls['password'].touched">
+    Password is required.
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">Register</button>
+
+  <div *ngIf="error" style="color: red;">
+    {{ error }}
+  </div>
+</form>

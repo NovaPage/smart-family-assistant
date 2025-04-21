@@ -1,0 +1,14 @@
+<div *ngIf="user; else loading">
+    <h2>Welcome, {{ user.name }}</h2>
+  
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Telegram Token:</strong> {{ user.telegram_token }}</p>
+  
+    <p><strong>Telegram Link:</strong></p>
+    <a [href]="telegramLink" target="_blank">{{ telegramLink }}</a>
+  </div>
+  
+  <ng-template #loading>
+    <p>Loading profile...</p>
+  </ng-template>
+  

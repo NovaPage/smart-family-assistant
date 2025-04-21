@@ -13,11 +13,21 @@ IGNORE_PATTERNS=(
     ".idea" ".vscode" ".DS_Store"
     ".terraform" ".next" "node_modules"
     ".python_packages"
+
+    # Angular
+    "dist" "karma.conf.js" "tsconfig.*" ".angular"
+    # Autogen
+    "autogen"
+    # npm
+    "package.json" "package-lock.json" "pnpm-lock.yaml" "yarn.lock"
+    # tests
+    "tests" "test" "coverage" ".coverage"
 )
 
 IGNORE_FILES_PATTERNS=(
     "*.pyc" "*.pyo" "*.log" "*.bak"
     "*.swp" "*.tmp" "*.lock" ".DS_Store"
+    "*.spec.ts" "*.test.ts"
 )
 
 # Función para construir expresión de exclusión para find
@@ -60,6 +70,9 @@ print_tree() {
     for file in $(find "$dir" -maxdepth 1 -mindepth 1 -type f | sort); do
         local base=$(basename "$file")
         should_ignore_file "$base" && continue
+        if [[ " ${IGNORE_PATTERNS[@]} " =~ " $base " ]]; then
+            continue
+        fi
         echo "${prefix}📄 $base"
     done
 }

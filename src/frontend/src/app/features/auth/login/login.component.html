@@ -1,0 +1,21 @@
+<h2>Login</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <p>Email:</p>
+  <input formControlName="username" />
+  <div *ngIf="form.controls['username'].invalid && form.controls['username'].touched">
+    Email is required and must be valid.
+  </div>
+
+  <p>Password:</p>
+  <input type="password" formControlName="password" />
+  <div *ngIf="form.controls['password'].invalid && form.controls['password'].touched">
+    Password is required.
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">Login</button>
+
+  <div *ngIf="error" style="color: red;">
+    {{ error }}
+  </div>
+</form>
