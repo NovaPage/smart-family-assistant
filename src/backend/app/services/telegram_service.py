@@ -4,11 +4,12 @@ from app.repositories.user_repository import (
     update_user_telegram_chat_id,
     get_user_by_chat_id
 )
-from app.services import assistant_service
+from app.services.assistant_service import AssistantService
 from app.models.user import UserInDB
 from app.core.config import settings
 from app.models.assistant import AssistantRequest
 
+assistant_service = AssistantService()
 
 class TelegramService:
     def __init__(self, assistant_service_instance):

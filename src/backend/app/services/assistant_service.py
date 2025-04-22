@@ -1,80 +1,80 @@
-# File: src/backend/app/repositories/interaction_repository.py
-
-# Add this at the top of src/backend/app/services/assistant_service.py
+# File: src/backend/app/services/assistant_service.py
 
 import sys
 from pathlib import Path
-
-sys.path.append(str(Path(__file__).resolve().parents[4]))  # Esto apunta al root del proyecto
-
-
-from uuid import UUID, uuid4
+from uuid import uuid4
 from datetime import datetime, timezone
-from typing import List
 
-from src.backend.app.models.interaction import Interaction
-from src.backend.app.repositories.cosmos_client import database
+sys.path.append(str(Path(__file__).resolve().parents[4]))
+
+from app.models.assistant import AssistantRequest, AssistantResponse
+from app.models.interaction import Interaction
+from app.models.user import UserInDB
+from app.models.thread import ThreadCreate, ThreadInDB
+from app.repositories import interaction_repository, thread_repository
+from app.core.config import settings
 from family_agent.agents.maestro import MasterAssistant
 
-from src.backend.app.models.assistant import AssistantRequest, AssistantResponse
-from src.backend.app.models.user import UserInDB
-from src.backend.app.repositories import interaction_repository
-from app.models.interaction import Interaction
 
+class AssistantService:
+    def __init__(self):
+        self.agent = MasterAssistant()
 
+    def send_message(self, user: UserInDB, message: str, source: str) -> str:
+        context = None
+        thread = thread_repository.get_active_thread(user.id, source)
 
-interactions_container = database.get_container_client("interactions")
+        if thread:
+            if thread_repository.is_thread_inactive(thread):
+                thread_repository.close_thread(thread.id)
 
+                recent_messages = interaction_repository.get_last_messages_by_thread(thread.id, limit=5)
+                conversation_log = "\n".join([
+                    f"User: {msg.message}\nAssistant: {msg.response}" for msg in recent_messages
+                ])
 
-def save_interaction(interaction: Interaction) -> None:
-    """
-    Saves a user-assistant interaction to the database.
-    """
-    item = {
-        "id": str(uuid4()),
-        "user_id": str(interaction.user_id),
-        "message": interaction.message,
-        "response": interaction.response,
-        "timestamp": interaction.timestamp.isoformat()
-    }
-    interactions_container.create_item(item)
+                summary_prompt = (
+                    "Summarize this past conversation to help resume it later:\n\n"
+                    f"{conversation_log}"
+                )
+                summary, _ = self.agent.process_message(message=summary_prompt, context=None)
+                thread_repository.update_summary(thread.id, summary)
+                context = summary
+                thread = None  # Se fuerza creación de nuevo hilo
 
+        # Crear nuevo hilo si no existe (o si se cerró el anterior por inactividad)
+        if not thread:
+            reply, openai_thread_id = self.agent.process_message(
+                message=message,
+                context=context,
+                thread_id=None
+            )
+            thread = thread_repository.create_thread(
+                ThreadCreate(
+                    user_id=str(user.id),
+                    source=source,
+                    summary=context,
+                    openai_thread_id=openai_thread_id
+                )
+            )
+        else:
+            # Reutilizar hilo existente
+            reply, _ = self.agent.process_message(
+                message=message,
+                context=context,
+                thread_id=thread.openai_thread_id
+            )
 
-def get_interactions_by_user(user_id: UUID) -> List[Interaction]:
-    """
-    Retrieves all interactions for a given user.
-    """
-    query = "SELECT * FROM interactions i WHERE i.user_id = @user_id"
-    params = [{"name": "@user_id", "value": str(user_id)}]
-    items = interactions_container.query_items(query, parameters=params, enable_cross_partition_query=True)
-
-    return [
-        Interaction(
-            user_id=UUID(item["user_id"]),
-            message=item["message"],
-            response=item["response"],
-            timestamp=datetime.fromisoformat(item["timestamp"])
+        # Guardar la interacción
+        interaction = Interaction(
+            id=str(uuid4()),
+            user_id=user.id,
+            thread_id=thread.id,
+            message=message,
+            response=reply,
+            timestamp=datetime.now(timezone.utc)
         )
-        for item in items
-    ]
+        interaction_repository.save_interaction(interaction)
+        thread_repository.update_timestamp(thread.id)
 
-def process_message(current_user: UserInDB, request: AssistantRequest) -> AssistantResponse:
-    # Create the assistant
-    agent = MasterAssistant()
-
-    # Get the response from the agent
-    response = agent.process_message(request.message)
-
-    # Save the interaction
-    interaction = Interaction(
-        id=str(uuid4()),
-        user_id=str(current_user.id),
-        message=request.message,
-        response=response,
-        timestamp=datetime.now(timezone.utc)
-    )
-    interaction_repository.save_interaction(interaction)
-
-
-    # Return structured response
-    return AssistantResponse(response=response)
+        return reply

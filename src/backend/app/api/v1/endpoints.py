@@ -1,17 +1,18 @@
 # File: src/backend/app/api/v1/endpoints.py
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
-from app.core.config import settings
 from app.models.user import UserCreate, UserProfile, UserUpdate
 from app.models.auth import Token
 from app.models.assistant import AssistantRequest, AssistantResponse
-from app.services import auth_service, user_service, assistant_service
+from app.services import auth_service, user_service
+from app.services.assistant_service import AssistantService
 from app.dependencies import get_current_user
 from fastapi import Body
-from app.services.telegram_service import TelegramService
+from app.services import telegram_service
 
-telegram_service = TelegramService(assistant_service)
+assistant_service = AssistantService()
+
 
 
 
@@ -42,7 +43,13 @@ def update_user_profile(data: UserUpdate, current_user=Depends(get_current_user)
 def send_message_to_assistant(
     request: AssistantRequest, current_user=Depends(get_current_user)
 ):
-    return assistant_service.process_message(current_user, request)
+    response = assistant_service.send_message(
+        user=current_user,
+        message=request.message,
+        source="web"
+    )
+    return AssistantResponse(response=response)
+
 
 @router.post("/webhook/telegram")
 async def telegram_webhook(update: dict = Body(...)):
