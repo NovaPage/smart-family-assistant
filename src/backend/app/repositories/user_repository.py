@@ -13,6 +13,58 @@ cosmos_client = CosmosClient(settings.cosmos_db_uri, credential=settings.cosmos_
 database = cosmos_client.get_database_client(settings.cosmos_db_database)
 users_container = database.get_container_client("users")
 
+def get_user_by_telegram_token(token: str) -> Optional[UserInDB]:
+    """
+    Finds a user by their unique Telegram token (used for linking).
+    """
+    query = "SELECT * FROM users u WHERE u.telegram_token = @token"
+    params = [{"name": "@token", "value": token}]
+    result = list(users_container.query_items(query, parameters=params, enable_cross_partition_query=True))
+
+    if not result:
+        return None
+
+    user = result[0]
+    return UserInDB(
+        id=UUID(user["id"]),
+        name=user["name"],
+        email=user["email"],
+        hashed_password=user["hashed_password"],
+        telegram_token=user.get("telegram_token"),
+        telegram_chat_id=user.get("telegram_chat_id")
+    )
+
+
+def update_user_telegram_chat_id(user_id: UUID, chat_id: int) -> None:
+    """
+    Updates the user's record to include their Telegram chat ID.
+    """
+    user = users_container.read_item(item=str(user_id), partition_key=str(user_id))
+    user["telegram_chat_id"] = chat_id
+    users_container.replace_item(item=str(user_id), body=user)
+
+
+def get_user_by_chat_id(chat_id: int) -> Optional[UserInDB]:
+    """
+    Finds a user based on their Telegram chat ID.
+    """
+    query = "SELECT * FROM users u WHERE u.telegram_chat_id = @chat_id"
+    params = [{"name": "@chat_id", "value": chat_id}]
+    result = list(users_container.query_items(query, parameters=params, enable_cross_partition_query=True))
+
+    if not result:
+        return None
+
+    user = result[0]
+    return UserInDB(
+        id=UUID(user["id"]),
+        name=user["name"],
+        email=user["email"],
+        hashed_password=user["hashed_password"],
+        telegram_token=user.get("telegram_token"),
+        telegram_chat_id=user.get("telegram_chat_id")
+    )
+
 
 def create_user(user_data: dict, hashed_password: str) -> UserInDB:
     """

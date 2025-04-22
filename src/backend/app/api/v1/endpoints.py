@@ -8,6 +8,12 @@ from app.models.auth import Token
 from app.models.assistant import AssistantRequest, AssistantResponse
 from app.services import auth_service, user_service, assistant_service
 from app.dependencies import get_current_user
+from fastapi import Body
+from app.services.telegram_service import TelegramService
+
+telegram_service = TelegramService(assistant_service)
+
+
 
 router = APIRouter()
 
@@ -37,3 +43,7 @@ def send_message_to_assistant(
     request: AssistantRequest, current_user=Depends(get_current_user)
 ):
     return assistant_service.process_message(current_user, request)
+
+@router.post("/webhook/telegram")
+async def telegram_webhook(update: dict = Body(...)):
+    return telegram_service.handle_update(update)

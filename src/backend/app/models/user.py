@@ -20,6 +20,7 @@ class UserProfile(BaseModel):
     name: str
     email: EmailStr
     telegram_token: Optional[str] = None
+    telegram_chat_id: Optional[int] = None
 
 
 
