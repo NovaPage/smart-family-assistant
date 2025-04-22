@@ -2,12 +2,9 @@
 
 ## 📘 `README.md` – Proyecto: Asistente Familiar Inteligente
 
-```markdown
 # 🤖 Asistente Familiar Inteligente
 
 Este proyecto implementa una arquitectura modular para un sistema de agentes inteligentes basado en Autogen, con backend en FastAPI, frontend en Angular, y herramientas serverless vía Azure Functions.
-
----
 
 ## 📦 Estructura General del Proyecto
 
