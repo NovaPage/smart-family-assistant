@@ -9,7 +9,7 @@ from app.services import auth_service, user_service
 from app.services.assistant_service import AssistantService
 from app.dependencies import get_current_user
 from fastapi import Body
-from app.services import telegram_service
+from app.services.telegram_service import telegram_service
 
 assistant_service = AssistantService()
 

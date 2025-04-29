@@ -7,7 +7,7 @@ from datetime import datetime
 class Interaction(BaseModel):
     id: UUID
     user_id: UUID
-    thread_id: UUID
+    thread_id: str
     message: str
     response: str
     timestamp: datetime

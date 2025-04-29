@@ -14,6 +14,7 @@ class ThreadCreate(BaseModel):
     user_id: str
     source: Literal["web", "telegram"]
     summary: Optional[str] = None
+    openai_thread_id: str
 
 class ThreadInDB(BaseModel):
     id: str 

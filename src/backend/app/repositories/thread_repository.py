@@ -25,12 +25,13 @@ def get_active_thread(user_id: str, source: str) -> Optional[ThreadInDB]:
 
 def create_thread(data: ThreadCreate) -> ThreadInDB:
     new_thread = ThreadInDB(
+        id=data.openai_thread_id,
         user_id=data.user_id,
         source=data.source,
         summary=data.summary,
         openai_thread_id=data.openai_thread_id
     )
-    _threads.create_item(new_thread.model_dump())
+    _threads.create_item(new_thread.model_dump(mode="json"))
     return new_thread
 
 def close_thread(thread_id: str) -> None:
@@ -59,3 +60,15 @@ def get_last_closed_thread(user_id: str, source: str) -> Optional[ThreadInDB]:
 def is_thread_inactive(thread: ThreadInDB) -> bool:
     inactivity_duration = timedelta(minutes=settings.thread_inactivity_minutes)
     return (datetime.utcnow() - thread.updated_at) > inactivity_duration
+
+def update_timestamp(openai_thread_id: str) -> None:
+    query = f"SELECT * FROM c WHERE c.openai_thread_id = '{openai_thread_id}'"
+    items = list(_threads.query_items(query=query, enable_cross_partition_query=True))
+
+    if not items:
+        return
+
+    thread_doc = items[0]
+    thread_doc["updated_at"] = datetime.utcnow().isoformat()
+
+    _threads.replace_item(item=thread_doc["id"], body=thread_doc)

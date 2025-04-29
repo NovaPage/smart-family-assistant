@@ -45,15 +45,13 @@ class TelegramService:
         self._send_message(chat_id, f"✅ ¡Hola {user.name}! Tu cuenta fue vinculada exitosamente.")
         return {"status": "linked"}
 
-    from app.models.assistant import AssistantRequest  # Asegúrate de tener esto al inicio del archivo
-
     def _handle_user_message(self, chat_id: int, text: str, user: UserInDB) -> dict:
         try:
-            assistant_response = self.assistant_service.process_message(
-                current_user=user,
-                request=AssistantRequest(message=text, source="telegram")
+            response_text = self.assistant_service.send_message(
+                user=user,
+                message=text,
+                source="telegram"
             )
-            response_text = assistant_response.response
         except Exception as e:
             response_text = "❌ Hubo un error al procesar tu mensaje."
             print(f"Error procesando mensaje para usuario {user.id}: {e}")
@@ -71,3 +69,5 @@ class TelegramService:
             requests.post(self.telegram_api_url, json=payload, timeout=10)
         except Exception as e:
             print(f"Error al enviar mensaje a Telegram: {e}")
+
+telegram_service = TelegramService(assistant_service)
