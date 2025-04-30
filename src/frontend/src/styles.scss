@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: transparent;
+    box-sizing: border-box;
+    overflow-x: hidden; // previene scroll horizontal si la imagen se desborda
+  }
+  
+  @font-face {
+    font-family: 'Alata';
+    src: url('assets/fonts/Fuente-Alata.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  @font-face {
+    font-family: 'Montserrat';
+    src: url('assets/fonts/Fuente-Montserrat.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  

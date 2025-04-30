@@ -4,6 +4,7 @@ from app.models.user import UserCreate, UserInDB
 from app.models.auth import Token
 from app.repositories import user_repository
 from app.core.config import settings
+from fastapi import HTTPException
 
 from passlib.context import CryptContext
 from jose import jwt
@@ -46,14 +47,15 @@ def register(user_data: UserCreate) -> Token:
     """
     existing = user_repository.get_user_by_email(user_data.email)
     if existing:
-        raise Exception("Email already registered")
+        # Proper HTTP error with CORS-compatible response
+        raise HTTPException(status_code=400, detail="Email already registered")
 
     hashed_pw = hash_password(user_data.password)
 
-    # Generamos el telegram_token
+    # Generate unique Telegram token
     telegram_token = str(uuid4())
 
-    # Extendemos los datos del usuario
+    # Extend user data with Telegram token
     user_data_dict = user_data.dict()
     user_data_dict["telegram_token"] = telegram_token
 
@@ -67,6 +69,7 @@ def login(email: str, password: str) -> Token:
     """
     user = user_repository.get_user_by_email(email)
     if not user or not verify_password(password, user.hashed_password):
-        raise Exception("Invalid credentials")
+        # Use 401 Unauthorized with CORS support
+        raise HTTPException(status_code=401, detail="Invalid credentials")
 
     return create_jwt_token(user.id)

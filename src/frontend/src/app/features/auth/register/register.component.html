@@ -1,27 +1,92 @@
-<h2>Register</h2>
+<div class="register-container">
+  <div class="register-card">
+    <img src="assets/logo.png" alt="Logo" class="register-logo" />
+    <h2 class="register-title">REGISTER</h2>
 
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <p>Name:</p>
-  <input formControlName="name" />
-  <div *ngIf="form.controls['name'].invalid && form.controls['name'].touched">
-    Name is required.
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="register-form">
+      <div class="form-group">
+        <label>
+          <lucide-icon [img]="User" size="20" strokeWidth="1.5"></lucide-icon>
+          <input type="text" formControlName="name" placeholder="Full name" />
+        </label>
+        <div *ngIf="form.controls['name'].invalid && form.controls['name'].touched" class="error-message-box">
+          <p class="error-message-text">Name is required.</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <lucide-icon [img]="Mail" size="20" strokeWidth="1.5"></lucide-icon>
+          <input type="email" formControlName="email" placeholder="Email address" />
+        </label>
+        <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched" class="error-message-box">
+          <p class="error-message-text">Email is required and must be valid.</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <lucide-icon [img]="Lock" size="20" strokeWidth="1.5"></lucide-icon>
+          <input [type]="passwordInputType" formControlName="password" placeholder="Password" />
+          <lucide-icon
+            [img]="showPassword ? Eye : EyeOff"
+            size="20"
+            strokeWidth="1.5"
+            (click)="togglePasswordVisibility()"
+            class="icon-eye"
+          ></lucide-icon>
+        </label>
+        <div *ngIf="form.controls['password'].invalid && form.controls['password'].touched" class="error-message-box">
+          <p class="error-message-text">Password is required.</p>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>
+          <lucide-icon [img]="Lock" size="20" strokeWidth="1.5"></lucide-icon>
+          <input [type]="passwordInputType" formControlName="confirmPassword" placeholder="Confirm Password" />
+          <lucide-icon
+            [img]="showPassword ? Eye : EyeOff"
+            size="20"
+            strokeWidth="1.5"
+            (click)="togglePasswordVisibility()"
+            class="icon-eye"
+          ></lucide-icon>
+        </label>
+        <div
+          *ngIf="(form.controls['confirmPassword'].hasError('required') || form.hasError('passwordMismatch')) 
+                && (form.controls['confirmPassword'].touched || form.controls['confirmPassword'].dirty)"
+          class="error-message-box"
+        >
+          <p
+            class="error-message-text"
+            *ngIf="form.controls['confirmPassword'].hasError('required')"
+          >
+            Confirm Password is required.
+          </p>
+          <p
+            class="error-message-text"
+            *ngIf="!form.controls['confirmPassword'].hasError('required') && form.hasError('passwordMismatch')"
+          >
+            Passwords do not match.
+          </p>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="form.invalid || isLoading" class="register-button">
+        <ng-container *ngIf="!isLoading; else loadingTpl">REGISTER</ng-container>
+        <ng-template #loadingTpl>
+          <lucide-icon [img]="Loader" class="spinner" size="20" strokeWidth="2"></lucide-icon>
+        </ng-template>
+      </button>
+
+      <div *ngIf="error" class="error-message-box">
+        <p class="error-message-text">{{ error }}</p>
+      </div>
+
+      <div *ngIf="success" class="success-message-box">
+        <p class="success-message-text">{{ success }}</p>
+      </div>
+    </form>
   </div>
-
-  <p>Email:</p>
-  <input formControlName="email" />
-  <div *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
-    Email is required and must be valid.
-  </div>
-
-  <p>Password:</p>
-  <input type="password" formControlName="password" />
-  <div *ngIf="form.controls['password'].invalid && form.controls['password'].touched">
-    Password is required.
-  </div>
-
-  <button type="submit" [disabled]="form.invalid">Register</button>
-
-  <div *ngIf="error" style="color: red;">
-    {{ error }}
-  </div>
-</form>
+</div>
