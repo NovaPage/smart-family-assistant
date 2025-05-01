@@ -1,14 +1,42 @@
-<div *ngIf="user; else loading">
-    <h2>Welcome, {{ user.name }}</h2>
-  
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Telegram Token:</strong> {{ user.telegram_token }}</p>
-  
-    <p><strong>Telegram Link: </strong><a [href]="telegramLink" target="_blank">{{ telegramLink }}</a></p>
-    
+<div class="profile-wrapper">
+  <app-navbar></app-navbar>
+
+  <div class="profile-container" *ngIf="user; else loading">
+    <div class="profile-columns">
+      <div class="profile-left">
+        <h1 class="welcome-text">
+          Welcome, <span class="highlight">{{ user.name }}!</span>
+        </h1>
+      </div>
+
+      <div class="profile-right">
+        <div class="profile-box">
+          <div class="profile-avatar">
+            <img src="assets/profile.png" alt="User avatar" onerror="this.style.display='none'" />
+          </div>
+          
+
+          <div class="profile-card">
+            <p class="user-name">{{ user.name }}</p>
+
+            <p class="user-label">Email:</p>
+            <p class="user-email">{{ user.email }}</p>
+
+            <p class="user-label">Telegram Token:</p>
+            <p class="user-token">{{ user.telegram_token }}</p>
+
+            <a [href]="telegramLink" target="_blank" class="telegram-button">
+              Telegram Link:
+              <lucide-icon [img]="Link" size="18" strokeWidth="1.5"></lucide-icon>
+              <span class="link-label">Link</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  
+
   <ng-template #loading>
-    <p>Loading profile...</p>
+    <p class="loading-text">Loading profile...</p>
   </ng-template>
-  
+</div>

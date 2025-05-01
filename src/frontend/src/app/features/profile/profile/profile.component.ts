@@ -3,14 +3,19 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { UserProfile } from '../../../models/user.model';
 import { environment } from '../../../environment';
+import { NavbarComponent } from "../../../shared/navbar.component";
+import { Link, LucideAngularModule } from 'lucide-angular';
+
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './profile.component.html'
+  imports: [CommonModule, NavbarComponent, LucideAngularModule],
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+  Link = Link;
   user: UserProfile | null = null;
   telegramLink = '';
   readonly botUsername = 'EvanaFamilYBot';

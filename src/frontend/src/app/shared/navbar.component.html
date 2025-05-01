@@ -1,0 +1,26 @@
+<div class="navbar">
+  <img src="assets/logo-name.png" alt="Logo" class="navbar-logo" />
+
+  <div class="navbar-center">
+    <a
+      routerLink="/profile"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="nav-option"
+    >
+      Profile
+    </a>
+    <a
+      routerLink="/chat"
+      routerLinkActive="active"
+      class="nav-option"
+    >
+      Chat
+    </a>
+  </div>
+
+  <button class="logout-button" (click)="logout()" title="Logout">
+    <lucide-icon [img]="LogOut" size="20" strokeWidth="1.5"></lucide-icon>
+    <span>Exit</span>
+  </button>
+</div>

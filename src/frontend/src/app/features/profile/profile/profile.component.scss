@@ -1,0 +1,161 @@
+.profile-wrapper {
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(to bottom, #8d7eff, #0aff86);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    font-family: 'Alata', sans-serif;
+  }
+
+  
+  .profile-container {
+    flex: 1;
+    padding: 3rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  
+  .profile-columns {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    gap: 3rem;
+  }
+  
+  .profile-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .welcome-text {
+    font-size: 4.5rem;
+    font-weight: bold;
+    color: #faf9f5;
+    text-align: center;
+  }
+  
+  .highlight {
+    color: #00ff84;
+  }
+  
+  .profile-right {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .profile-box {
+    width: 470px;
+    height: 700px;
+    border: 4px solid #faf9f5;
+    border-top-left-radius: 220px;
+    border-top-right-radius: 220px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    padding: 2rem 1.5rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: transparent;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  
+  
+  .profile-avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 4px solid #faf9f5;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+  
+    img, svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+  
+  .profile-card {
+    background: #faf9f5;
+    border-radius: 1.5rem;
+    padding: 2rem 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin-top: auto;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-wrap: break-word;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+  
+  .user-name {
+    color: #0aff86;
+    font-weight: bold;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .user-label {
+    font-weight: bold;
+    color: #8d7eff;
+    margin-bottom: 0rem;
+    font-size: 1.1rem;
+  }
+  
+  .user-email,
+  .user-token {
+    color: #bfbfbf;
+    font-size: 1rem;
+    word-break: break-word;
+    line-height: 1.5;
+    margin-bottom: 0.2rem;
+  }
+  
+  .telegram-button {
+    margin-top: 2rem;
+    background: #8d7eff;
+    color: #faf9f5;
+    padding: 0.8rem 1.4rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  
+    &:hover {
+      background: #00b45a;
+    }
+  
+    .link-label {
+      font-size: 1rem;
+    }
+  }
+  
+  .loading-text {
+    padding: 2rem;
+    color: #faf9f5;
+    font-size: 1.2rem;
+  }

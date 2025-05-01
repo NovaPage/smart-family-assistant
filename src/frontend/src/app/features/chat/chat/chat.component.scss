@@ -1,0 +1,148 @@
+.chat-wrapper {
+    height: 100vh;
+    width: 100%;
+    background: linear-gradient(to bottom, #8d7eff, #0aff86);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    font-family: 'Alata', sans-serif;
+  }
+  
+  .chat-container {
+    background-color: #faf9f5;
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 1000px;
+    height: 80vh;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+  
+  .chat-welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .welcome-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-image: url('/assets/favicon.ico'); // o ícono especial de Evana
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 0.8rem;
+  }
+  
+  .welcome-text {
+    font-size: 1.3rem;
+    color: #c2bfbf;
+    font-weight: 500;
+    text-align: center;
+    font-family: 'Alata', sans-serif;
+  }
+  
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    padding-right: 1rem;
+  }
+  
+  .message {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    font-family: 'Alata', sans-serif;
+  }
+  
+  .message.bot {
+    flex-direction: row;
+  }
+  
+  .message.user {
+    flex-direction: row-reverse;
+    text-align: right;
+  }
+  
+  .message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+  }
+  
+  .bot-avatar {
+    background-image: url('/assets/favicon.ico'); // o el ícono de Evana
+  }
+  
+  .user-avatar {
+    background-image: url('/assets/user.png'); // asegúrate que exista
+  }
+  
+  
+  .message-bubble {
+    background-color: #d9d5ce;
+    padding: 0.8rem 1.2rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #2d2d2d;
+    max-width: 70%;
+  }
+  
+  .chat-input-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    background-color: #d9d5ce;
+    border-radius: 999px;
+    padding: 0.3rem 0.5rem;
+  }
+  
+  .chat-input-section input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: 'Alata', sans-serif;
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    outline: none;
+    color: #555;
+  }
+  
+  .chat-input-section button {
+    background-color: #8d7eff;
+    border: none;
+    border-radius: 999px;
+    padding: 0.6rem 1rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Alata', sans-serif;
+  
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+  
+  .loading-text {
+    font-size: 1rem;
+    color: #8d7eff;
+    margin-top: 1rem;
+    text-align: center;
+  }
+  

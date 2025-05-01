@@ -42,7 +42,7 @@ class TelegramService:
             return {"status": "invalid_token"}
 
         update_user_telegram_chat_id(user.id, chat_id)
-        self._send_message(chat_id, f"✅ ¡Hola {user.name}! Tu cuenta fue vinculada exitosamente.")
+        self._send_message(chat_id, f"✅ ¡Hi {user.name}! Your account has been successfully linked.")
         return {"status": "linked"}
 
     def _handle_user_message(self, chat_id: int, text: str, user: UserInDB) -> dict:
