@@ -124,7 +124,8 @@ def get_user_by_id(user_id: UUID) -> Optional[UserInDB]:
             name=user["name"],
             email=user["email"],
             hashed_password=user["hashed_password"],
-            telegram_token=user.get("telegram_token")
+            telegram_token=user.get("telegram_token"),
+            telegram_chat_id=user.get("telegram_chat_id")
         )
     except CosmosResourceNotFoundError:
         return None

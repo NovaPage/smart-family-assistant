@@ -69,5 +69,17 @@ class TelegramService:
             requests.post(self.telegram_api_url, json=payload, timeout=10)
         except Exception as e:
             print(f"Error al enviar mensaje a Telegram: {e}")
+            
+    def send_reminder(self, chat_id: int, message: str) -> None:
+        """
+        Public method to send a reminder message to a user via Telegram.
+        Logs errors if the message fails to deliver.
+        """
+        print(f"🔔 Sending reminder to chat_id {chat_id} -> {message}")
+        try:
+            self._send_message(chat_id=chat_id, text=message)
+        except Exception as e:
+            print(f"❌ Failed to send reminder to {chat_id}: {e}")
+
 
 telegram_service = TelegramService(assistant_service)

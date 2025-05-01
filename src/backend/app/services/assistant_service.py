@@ -38,6 +38,8 @@ class AssistantService:
                 context = self._summarize_recent_conversation(thread.id)
                 thread = None  # Force creation of a new thread
 
+        self.master_assistant.set_context_user(user)
+
         if not thread:
             reply, openai_thread_id = self.master_assistant.process_message(
                 message=message,
