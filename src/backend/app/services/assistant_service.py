@@ -80,7 +80,7 @@ class AssistantService:
             f"{conversation_log}"
         )
         summary, _ = self.master_assistant.process_message(message=summary_prompt, context=None)
-        thread_repository.update_summary(thread_id, summary)
+        # thread_repository.update_summary(thread_id, summary)
 
         return summary
 

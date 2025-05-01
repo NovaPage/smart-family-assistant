@@ -35,7 +35,12 @@ def create_thread(data: ThreadCreate) -> ThreadInDB:
     return new_thread
 
 def close_thread(thread_id: str) -> None:
-    thread_doc = _threads.read_item(item=thread_id, partition_key=thread_id)
+    query = f"SELECT * FROM threads t WHERE t.id = '{thread_id}'"
+    results = list(_threads.query_items(query=query, enable_cross_partition_query=True))
+    if not results:
+        return
+    thread_doc = results[0]
+
     if not thread_doc:
         return
     thread_doc["status"] = ThreadStatus.CLOSED
