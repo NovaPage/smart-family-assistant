@@ -1,5 +1,3 @@
----
-
 ## 📘 `README.md` – Proyecto: Asistente Familiar Inteligente
 
 # 🤖 Asistente Familiar Inteligente
@@ -134,7 +132,6 @@ func start
 - Usa `curl` o Postman para probar endpoints y funciones.
 
 ---
-
 ## 📅 Última actualización
 
 Abril 2025
